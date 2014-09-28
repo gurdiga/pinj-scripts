@@ -2,6 +2,8 @@
 
 module.exports = function(req, res) {
   sendEmail(req);
+  updateSubscriptionPaymentStatus(req);
+  saveUserBillingInfo(req);
 
   res
   .status(200)
@@ -18,6 +20,12 @@ function sendEmail(req) {
   nodemailer
   .createTransport(smtp(smtpConfig))
   .sendMail(email);
+}
+
+function updateSubscriptionPaymentStatus(req) {
+}
+
+function saveUserBillingInfo(req) {
 }
 
 var nodemailer = require('nodemailer');
