@@ -1,8 +1,10 @@
 'use strict';
 
-var basicAuth = require('basic-auth-connect');
+module.exports = function (req, res, next) {
+  if (badKey(req)) res.status(401).end('Bad key');
+  else next();
+};
 
-module.exports = basicAuth(function(user, pass){
-  return user === process.env.HTTP_USER &&
-         pass === process.env.HTTP_PASS;
-});
+function badKey(req) {
+  return req.param('key') !== process.env.KEY;
+}
