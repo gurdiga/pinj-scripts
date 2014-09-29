@@ -5,9 +5,7 @@ module.exports = function(req, res) {
   updateSubscriptionPaymentStatus(req);
   saveUserBillingInfo(req);
 
-  res
-  .status(200)
-  .send('OK');
+  res.redirect('http://pinj.pentru.md/app.html#thank-you-message');
 };
 
 function sendEmail(req) {
@@ -23,9 +21,11 @@ function sendEmail(req) {
 }
 
 function updateSubscriptionPaymentStatus(req) {
+  /*jshint unused:false*/
 }
 
 function saveUserBillingInfo(req) {
+  /*jshint unused:false*/
 }
 
 var nodemailer = require('nodemailer');
