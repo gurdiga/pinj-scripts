@@ -10,7 +10,7 @@ module.exports = function(req, res) {
 
 function sendEmail(req) {
   var email = require('../email-template.json');
-  var text = JSON.stringify(req.body, null, 2);
+  var text = JSON.stringify(req.query, null, 2);
 
   email.html = '<pre>' + text + '</pre>';
   email.text = text;

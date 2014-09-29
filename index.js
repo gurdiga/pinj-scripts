@@ -1,9 +1,7 @@
 'use strict';
 
 var app = require('express')();
-var bodyParser = require('body-parser');
 
-app.use(bodyParser.urlencoded({ extended: false }));
 app.use(require('./app/auth'));
 
 require('./app/actions')(app);
