@@ -17,11 +17,21 @@
   "maxcomplexity": 4,
   "white": false,
   "sub": true,
+  "-W030": true,
 
   "globals": {
+    "global": false,
     "require": false,
     "process": false,
     "console": false,
-    "module": false
+    "module": false,
+
+    "describe": false,
+    "it": false,
+    "before": false,
+    "beforeEach": false,
+    "after": false,
+    "afterEach": false,
+    "expect": false
   }
 }
