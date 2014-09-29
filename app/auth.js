@@ -6,5 +6,5 @@ module.exports = function (req, res, next) {
 };
 
 function badKey(req) {
-  return req.param('key') !== process.env.KEY;
+  return req.param('pass') !== process.env.KEY;
 }
