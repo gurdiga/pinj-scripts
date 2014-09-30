@@ -1,7 +1,6 @@
 'use strict';
 
 function FirebaseClient(firebaseUrl, firebaseSecret) {
-  this.NOW = Firebase.ServerValue.TIMESTAMP;
   this.ref = new Firebase(firebaseUrl);
   this.auth = auth(this.ref, firebaseSecret);
 }
