@@ -1,7 +1,5 @@
 {
   "from": "PINJ Payment Registrar <payment-registrar@pinj.pentru.md>",
   "to": "info@pinj.pentru.md",
-  "subject": "New order created",
-  "html": "WILL BE SET",
-  "text": "WILL BE SET"
+  "subject": "New order created"
 }

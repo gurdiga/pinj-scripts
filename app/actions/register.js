@@ -1,38 +1,51 @@
 'use strict';
 
 module.exports = function(req, res) {
-  if (invalid(req)) {
+  if (!responseIntegrityVeryfier.valid(req.query)) {
     res.status(400).end();
     return;
   }
 
-  sendEmail(req);
-  updateFirebase(req);
+  var emailText = JSON.stringify(req.query, null, 2);
+  var emailMessage = new EmailMessage(emailHeaders, emailText);
 
-  res.redirect('http://pinj.pentru.md/app.html#thank-you-message');
+  Q.all([
+    emailSender.send(emailMessage),
+    paymentRecorder.record(req.query)
+  ])
+  .then(function() {
+    res.redirect('http://pinj.pentru.md/app.html#thank-you-message');
+  })
+  .catch(function(error) {
+    res.status(500).send(error.message);
+  });
 };
 
-function invalid() {
-  // TODO
-  return false;
-}
+var ResponseIntegrityVeryfier = require('../response-integrity-verifier');
+var responseIntegrityVeryfier = new ResponseIntegrityVeryfier();
 
-function sendEmail(req) {
-  var email = require('../email-template.json');
-  var text = JSON.stringify(req.query, null, 2);
+var EmailMessage = require('../email-message');
+var emailHeaders = require('../email-headers.json');
 
-  email.html = '<pre>' + text + '</pre>';
-  email.text = text;
+var EmailSender = require('../email-sender');
+var smtpConfig = {
+  'port':   process.env.SMTP_PORT,
+  'host':   process.env.SMTP_HOST,
+  'name':   process.env.SMTP_NAME,
+  'secure': process.env.SMTP_SECURE === 'true',
+  'debug':  process.env.SMTP_DEBUG === 'true',
+  'auth': {
+    'user': process.env.SMTP_USER,
+    'pass': process.env.SMTP_PASS
+  }
+};
+var emailSender = new EmailSender(smtpConfig);
 
-  nodemailer
-  .createTransport(smtp(smtpConfig))
-  .sendMail(email);
-}
+var FirebaseClient = require('../firebase-client');
+var firebaseClient = new FirebaseClient(process.env.FIREBASE_URL);
 
-function updateFirebase(req) {
-  /*jshint unused:false*/
-}
+var PaymentRecorder = require('../payment-recorder');
+var paymentRecorder = new PaymentRecorder(firebaseClient);
 
-var nodemailer = require('nodemailer');
-var smtp = require('nodemailer-smtp-transport');
-var smtpConfig = require('../smtp-config.json');
+var Q = require('q');
+Q.longStackSupport = true;
