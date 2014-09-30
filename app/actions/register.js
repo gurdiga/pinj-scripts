@@ -1,12 +1,21 @@
 'use strict';
 
 module.exports = function(req, res) {
+  if (invalid(req)) {
+    res.status(400).end();
+    return;
+  }
+
   sendEmail(req);
-  updateSubscriptionPaymentStatus(req);
-  saveUserBillingInfo(req);
+  updateFirebase(req);
 
   res.redirect('http://pinj.pentru.md/app.html#thank-you-message');
 };
+
+function invalid() {
+  // TODO
+  return false;
+}
 
 function sendEmail(req) {
   var email = require('../email-template.json');
@@ -20,11 +29,7 @@ function sendEmail(req) {
   .sendMail(email);
 }
 
-function updateSubscriptionPaymentStatus(req) {
-  /*jshint unused:false*/
-}
-
-function saveUserBillingInfo(req) {
+function updateFirebase(req) {
   /*jshint unused:false*/
 }
 
