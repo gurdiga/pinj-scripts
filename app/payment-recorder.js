@@ -5,15 +5,23 @@ function PaymentRecorder(firebaseClient) {
 }
 
 PaymentRecorder.prototype.record = function(response) {
-  var deferred = Q.defer();
+  var email = response['pinj_email'];
+  var userData = new UserData(this.firebaseClient, email);
 
-  // TODO
-  deferred.resolve(response);
+  var subscriptionId = response['merchant_product_id'];
+  var billingInfo = _(response).pick('country', 'card_holder_name', 'street_address', 'street_address2', 'city', 'state', 'zip', 'phone', 'phone_extension', 'email');
 
-  return deferred.promise;
+  return Q.all([
+    userData.setSubscription(subscriptionId),
+    userData.recordLastPayment(),
+    userData.saveBillingInfo(billingInfo)
+  ]);
 };
 
 module.exports = PaymentRecorder;
 
 var Q = require('q');
 Q.longStackSupport = true;
+var _ = require('underscore');
+
+var UserData = require('./user-data');

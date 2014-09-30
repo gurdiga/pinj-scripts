@@ -17,6 +17,7 @@ module.exports = function(req, res) {
     res.redirect('http://pinj.pentru.md/app.html#thank-you-message');
   })
   .catch(function(error) {
+    console.error(error.stack);
     res.status(500).send(error.message);
   });
 };
@@ -28,21 +29,10 @@ var EmailMessage = require('../email-message');
 var emailHeaders = require('../email-headers.json');
 
 var EmailSender = require('../email-sender');
-var smtpConfig = {
-  'port':   process.env.SMTP_PORT,
-  'host':   process.env.SMTP_HOST,
-  'name':   process.env.SMTP_NAME,
-  'secure': process.env.SMTP_SECURE === 'true',
-  'debug':  process.env.SMTP_DEBUG === 'true',
-  'auth': {
-    'user': process.env.SMTP_USER,
-    'pass': process.env.SMTP_PASS
-  }
-};
-var emailSender = new EmailSender(smtpConfig);
+var emailSender = new EmailSender();
 
 var FirebaseClient = require('../firebase-client');
-var firebaseClient = new FirebaseClient(process.env.FIREBASE_URL);
+var firebaseClient = new FirebaseClient(process.env.FIREBASE_URL, process.env.FIREBASE_SECRET);
 
 var PaymentRecorder = require('../payment-recorder');
 var paymentRecorder = new PaymentRecorder(firebaseClient);
