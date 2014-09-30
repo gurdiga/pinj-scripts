@@ -6,9 +6,6 @@ lint:
 test: lint
 	@mocha --recursive --reporter dot --require './test/helpers' test/
 
-smoke:
-	echo ???
-
 start: lint
 	@foreman start
 
@@ -16,4 +13,7 @@ deploy:
 	@git push -f heroku master
 
 log:
-	heroku logs --tail
+	@heroku logs --tail
+
+config:
+	@heroku config:set $$(echo `cat .env`)
