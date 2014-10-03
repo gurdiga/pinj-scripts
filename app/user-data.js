@@ -1,23 +1,21 @@
 'use strict';
 
-function UserData(firebaseClient, email) {
-  this.firebaseClient = firebaseClient;
-
+function UserData(email) {
   var aid = email.replace(/\./g, ':');
   this.userPath = '/data/' + aid + '/';
 }
 
 UserData.prototype.setSubscription = function(subscriptionId) {
   var path = this.userPath + 'subscription';
-  return this.firebaseClient.set(path, subscriptionId);
+  return FirebaseClient.set(path, subscriptionId);
 };
 
 UserData.prototype.recordLastPayment = function() {
   var path = this.userPath + 'timestamps/lastPayment';
 
   return Q.all([
-    this.firebaseClient.get(path),
-    this.firebaseClient.get(this.userPath + 'timestamps/registration')
+    FirebaseClient.get(path),
+    FirebaseClient.get(this.userPath + 'timestamps/registration')
   ])
   .then(function(timestamps) {
     var lastPayment = timestamps[0];
@@ -25,13 +23,13 @@ UserData.prototype.recordLastPayment = function() {
 
     lastPayment = lastPayment ? oneMonthFrom(lastPayment) : whenTrialEnds(registration);
 
-    this.firebaseClient.set(path, lastPayment);
+    FirebaseClient.set(path, lastPayment);
   }.bind(this));
 };
 
 UserData.prototype.saveBillingInfo = function(billingInfo) {
   var path = this.userPath + 'billingInfo';
-  return this.firebaseClient.set(path, billingInfo);
+  return FirebaseClient.set(path, billingInfo);
 };
 
 function oneMonthFrom(lastPayment) {
@@ -39,10 +37,12 @@ function oneMonthFrom(lastPayment) {
 }
 
 function whenTrialEnds(registration) {
-  return registration + 7 * 24 * 3600 * 1000;
+  return registration + 31 * 24 * 3600 * 1000;
 }
 
 module.exports = UserData;
 
 var Q = require('q');
 Q.longStackSupport = true;
+
+var FirebaseClient = require('./firebase-client');

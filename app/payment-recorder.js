@@ -1,12 +1,11 @@
 'use strict';
 
-function PaymentRecorder(firebaseClient) {
-  this.firebaseClient = firebaseClient;
+function PaymentRecorder() {
 }
 
 PaymentRecorder.prototype.record = function(response) {
   var email = response['pinj_email'];
-  var userData = new UserData(this.firebaseClient, email);
+  var userData = new UserData(email);
 
   var subscriptionId = response['merchant_product_id'];
   var billingInfo = _(response).pick('country', 'card_holder_name', 'street_address', 'street_address2', 'city', 'state', 'zip', 'phone', 'phone_extension', 'email');

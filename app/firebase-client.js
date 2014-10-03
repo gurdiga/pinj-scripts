@@ -1,53 +1,70 @@
 'use strict';
 
-function FirebaseClient(firebaseUrl, firebaseSecret) {
-  this.ref = new Firebase(firebaseUrl);
-  this.auth = auth(this.ref, firebaseSecret);
-}
+var FirebaseClient = {};
 
-function auth(ref, firebaseSecret) {
-  var tokenGenerator = new FirebaseTokenGenerator(firebaseSecret);
-  var token = tokenGenerator.createToken({ 'paymentRegistrar': true });
-  var deferred = Q.defer();
+var authenticatePromise;
+var ref;
 
-  ref.auth(token, function(error) {
-    if (error) deferred.reject(error);
-    else deferred.resolve();
-  });
+FirebaseClient.start = function(firebaseUrl, firebaseSecret) {
+  ref = new Firebase(firebaseUrl);
+  authenticatePromise = authenticate(firebaseSecret);
+};
 
-  return deferred.promise;
-}
-
-FirebaseClient.prototype.get = function(path) {
-  return this.auth.then(function() {
+FirebaseClient.get = function(path) {
+  return authenticatePromise.then(function() {
     var deferred = Q.defer();
 
-    this.ref.child(path).once('value', function(snapshot) {
+    ref.child(path).once('value', function(snapshot) {
       deferred.resolve(snapshot.val());
     }, function errorHandler(error) {
       deferred.reject(error);
     });
 
     return deferred.promise;
-  }.bind(this));
+  });
 };
 
-FirebaseClient.prototype.set = function(path, value) {
-  return this.auth.then(function() {
+FirebaseClient.set = function(path, value) {
+  return authenticatePromise.then(function() {
     var deferred = Q.defer();
 
-    this.ref.child(path).set(value, function(error) {
+    ref.child(path).set(value, function(error) {
       if (error) deferred.reject(error);
       else deferred.resolve();
     });
 
     return deferred.promise;
-  }.bind(this));
+  });
 };
+
+FirebaseClient.getRef = function() {
+  return authenticatePromise.then(function() {
+    return ref;
+  });
+};
+
+function authenticate(firebaseSecret) {
+  var tokenGenerator = new FirebaseTokenGenerator(firebaseSecret);
+  var token = tokenGenerator.createToken({
+    'uid': 'script'
+  });
+  var deferred = Q.defer();
+
+  ref.authWithCustomToken(token, function(error) {
+    if (error) deferred.reject(error);
+    else deferred.resolve();
+  });
+
+  return deferred.promise
+  .catch(function(error) {
+    console.error('FirebaseClient: error while authenticating:', error.stack);
+  });
+}
 
 module.exports = FirebaseClient;
 
 var Q = require('q');
 Q.longStackSupport = true;
+
 var Firebase = require('firebase');
 var FirebaseTokenGenerator = require('firebase-token-generator');

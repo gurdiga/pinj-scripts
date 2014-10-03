@@ -31,11 +31,8 @@ var emailHeaders = require('../email-headers.json');
 var EmailSender = require('../email-sender');
 var emailSender = new EmailSender();
 
-var FirebaseClient = require('../firebase-client');
-var firebaseClient = new FirebaseClient(process.env.FIREBASE_URL, process.env.FIREBASE_SECRET);
-
 var PaymentRecorder = require('../payment-recorder');
-var paymentRecorder = new PaymentRecorder(firebaseClient);
+var paymentRecorder = new PaymentRecorder();
 
 var Q = require('q');
 Q.longStackSupport = true;
