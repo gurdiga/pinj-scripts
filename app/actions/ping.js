@@ -1,5 +1,5 @@
 'use strict';
 
 module.exports = function(req, res) {
-  res.send(200, '');
+  res.status(200).end();
 };
