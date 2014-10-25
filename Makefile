@@ -6,7 +6,7 @@ lint:
 test: lint
 	@mocha --recursive --reporter dot --require './test/helpers' test/
 
-start: lint
+server: lint
 	@foreman start
 
 deploy:
