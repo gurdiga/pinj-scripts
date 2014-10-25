@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = function (req, res, next) {
-  if (isPublic(req.path)) next();
+  if (isPublic(req.path)) return next();
   if (invalidAuth(req)) res.status(401).end('Bad auth');
   else next();
 };
