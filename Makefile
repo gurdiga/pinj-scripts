@@ -17,3 +17,6 @@ log:
 
 config:
 	@heroku config:set $$(echo `cat .env`)
+
+deps:
+	npm prune && npm install
