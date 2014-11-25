@@ -37,7 +37,16 @@ function notifyAbout(aid, data) {
     'subject': 'New account registration'
   }, text);
 
-  emailSender.send(emailMessage);
+  console.time('Sending registation notification');
+  console.log(emailMessage, text.replace(/\n/g, ' '), JSON.stringify(process.env));
+  emailSender.send(emailMessage)
+  .then(function() {
+    console.timeEnd('Sending registation notification');
+  })
+  .catch(function(error) {
+    console.timeEnd('Sending registation notification');
+    console.error('Failed to send notification email: ', error);
+  });
 }
 
 module.exports = RegistrationNotifier;
