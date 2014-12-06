@@ -15,7 +15,8 @@ UserData.prototype.recordLastPayment = function() {
 
   return Q.all([
     FirebaseClient.get(path),
-    FirebaseClient.get(this.userPath + 'timestamps/registration')
+    FirebaseClient.get(this.userPath + 'timestamps/registration'),
+    FirebaseClient.set(this.userPath + 'timestamps/paymentOverdueNotification', null)
   ])
   .then(function(timestamps) {
     var lastPayment = timestamps[0];
