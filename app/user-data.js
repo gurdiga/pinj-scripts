@@ -22,7 +22,7 @@ UserData.prototype.recordLastPayment = function() {
     var lastPayment = timestamps[0];
     var registration = timestamps[1];
 
-    lastPayment = lastPayment ? oneMonthFrom(lastPayment) : whenTrialEnds(registration);
+    lastPayment = lastPayment ? Math.max(Date.now(), oneMonthFrom(lastPayment)) : Math.max(Date.now(), whenTrialEnds(registration));
 
     FirebaseClient.set(path, lastPayment);
   }.bind(this));
