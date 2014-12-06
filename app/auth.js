@@ -2,12 +2,13 @@
 
 module.exports = function (req, res, next) {
   if (isPublic(req.path)) return next();
-  if (invalidAuth(req)) res.status(401).end('Bad auth');
-  else next();
+  if (isAuthenticated(req)) next();
+  else res.status(401).end('Bad auth');
 };
 
-function invalidAuth(req) {
-  return req.param('pass') !== process.env.KEY;
+function isAuthenticated(req) {
+  var hasPass = new RegExp('pass=' + process.env.KEY)
+  return hasPass.test(req.originalUrl);
 }
 
 isPublic['/echo'] = true;
