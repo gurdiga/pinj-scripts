@@ -1,8 +1,9 @@
 {
-  "name": "pinj-payment-registrar",
+  "name": "pinj-scripts",
   "version": "0.0.1",
   "description": ".",
   "main": "index.js",
+  "private": true,
   "scripts": {
     "test": "make"
   },
@@ -11,11 +12,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/gurdiga/pinj-payment-registrar.git"
+    "url": "https://github.com/gurdiga/pinj-scripts.git"
   },
   "author": "Vlad GURDIGA",
   "license": "MIT",
-  "homepage": "https://github.com/gurdiga/pinj-payment-registrar",
+  "homepage": "https://github.com/gurdiga/pinj-scripts",
   "dependencies": {
     "express": "4.9.5",
     "q": "1.0.1",
