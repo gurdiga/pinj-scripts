@@ -7,7 +7,7 @@ module.exports = function (req, res, next) {
 };
 
 function isAuthenticated(req) {
-  var hasPass = new RegExp('pass=' + process.env.KEY)
+  var hasPass = new RegExp('pass=' + process.env.KEY);
   return hasPass.test(req.originalUrl);
 }
 
