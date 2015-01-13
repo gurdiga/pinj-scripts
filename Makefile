@@ -9,7 +9,7 @@ test: lint
 server: lint
 	@foreman start
 
-deploy:
+deploy: test
 	@git push -f heroku master
 
 log:
