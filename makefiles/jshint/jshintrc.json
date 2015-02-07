@@ -1,0 +1,38 @@
+{
+  "bitwise": true,
+  "camelcase": true,
+  "eqeqeq": true,
+  "immed": true,
+  "indent": 2,
+  "noarg": true,
+  "noempty": true,
+  "quotmark": true,
+  "undef": true,
+  "unused": true,
+  "trailing": true,
+  "maxdepth": 4,
+  "white": false,
+  "sub": true,
+  "evil": true,
+  "globalstrict": true,
+  "-W030": true,
+
+  "globals": {
+    "global": false,
+    "console": false,
+    "module": false,
+    "require": false,
+    "process": false,
+    "setTimeout": false,
+
+    "proxyquire": false,
+    "describe": false,
+    "before": false,
+    "beforeEach": false,
+    "afterEach": false,
+    "it": false,
+    "expect": false
+  },
+
+  "predef": [ "-Promise" ]
+}
