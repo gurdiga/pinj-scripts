@@ -12,7 +12,7 @@ function listenToChildAddedOnFirebaseRef(self) {
   .then(function(ref) {
     ref.child('/data').on('child_added', function(childSnapshot) {
       if (self.initialChildrenEnumeration) return;
-      notifyAbout(childSnapshot.name(), childSnapshot.val());
+      notifyAbout(childSnapshot.key(), childSnapshot.val());
     });
   });
 }
