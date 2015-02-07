@@ -10,6 +10,17 @@ UserData.prototype.setSubscription = function(subscriptionId) {
   return FirebaseClient.set(path, subscriptionId);
 };
 
+UserData.prototype.recordPayment = function() {
+  var path = this.userPath + 'payments';
+
+  return FirebaseClient.get(path)
+  .then(function(payments) {
+    if (!payments) payments = [];
+    payments.push(Date.now());
+    return FirebaseClient.set(path, payments);
+  });
+};
+
 UserData.prototype.recordLastPayment = function() {
   var path = this.userPath + 'timestamps/lastPayment';
 
@@ -25,7 +36,7 @@ UserData.prototype.recordLastPayment = function() {
     lastPayment = lastPayment ? Math.max(Date.now(), oneMonthFrom(lastPayment)) : Math.max(Date.now(), whenTrialEnds(registration));
 
     FirebaseClient.set(path, lastPayment);
-  }.bind(this));
+  });
 };
 
 UserData.prototype.saveBillingInfo = function(billingInfo) {

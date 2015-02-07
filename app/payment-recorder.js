@@ -1,5 +1,7 @@
 'use strict';
 
+module.exports = PaymentRecorder;
+
 function PaymentRecorder() {
 }
 
@@ -12,12 +14,11 @@ PaymentRecorder.prototype.record = function(response) {
 
   return Q.all([
     userData.setSubscription(subscriptionId),
+    userData.recordPayment(),
     userData.recordLastPayment(),
     userData.saveBillingInfo(billingInfo)
   ]);
 };
-
-module.exports = PaymentRecorder;
 
 var Q = require('q');
 Q.longStackSupport = true;
