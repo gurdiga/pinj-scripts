@@ -1,3 +1,3 @@
-### About
+### pinj-scripts
 
-It’s ă secret. :-|
+Various PINJ bits of functionality that didn’t fit anywhere else.
