@@ -26,7 +26,7 @@ function skipInitialChildrenEnumeration(self) {
 function notifyAbout(aid, data) {
   var email = aid.replace(/:/g, '.');
 
-  if (email.substr(-9) === '@test.com') return;
+  if (email.substr(-9) === '@test.com') return console.log('Would have sent an email to ' + email + ' if it wasn’t a test account');
   if (email.substr(0, 8) === 'gurdiga+') return;
 
   var text = 'New user’s email address: ' + email + '\n\n' +
