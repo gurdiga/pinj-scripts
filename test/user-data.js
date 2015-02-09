@@ -11,14 +11,26 @@ describe('UserData', function() {
 
   describe('recordPayment', function() {
     it('records a new item in the ./payments array', function() {
-      return userData.recordPayment()
+      var paymentDetails = {
+        'merchant_product_id': 'c15',
+        'total': '3.00',
+        'currency_code': 'USD',
+        'quantity': 1,
+        'product_id': 2,
+        'pinj_email': 'test@tet.com',
+        'card_holder_name': 'John DOE',
+        'credit_card_processed': 'Y',
+        'pay_method': 'CC',
+        'order_number': '205592913279'
+      };
+
+      return userData.recordPayment(paymentDetails)
       .then(function() {
         return FirebaseClient.get(userData.userPath + 'payments');
       })
       .then(function(timestamps) {
         var lastTimestamp = timestamps.pop();
-        expect(lastTimestamp).to.be.within(Date.now() - 3*1000, Date.now(),
-          'last timestamp whould be within last 3 seconds');
+        expect(lastTimestamp).to.deep.equal(paymentDetails);
       });
     });
 

@@ -10,13 +10,13 @@ UserData.prototype.setSubscription = function(subscriptionId) {
   return FirebaseClient.set(path, subscriptionId);
 };
 
-UserData.prototype.recordPayment = function() {
+UserData.prototype.recordPayment = function(paymentDetails) {
   var path = this.userPath + 'payments';
 
   return FirebaseClient.get(path)
   .then(function(payments) {
     if (!payments) payments = [];
-    payments.push(Date.now());
+    payments.push(paymentDetails);
     return FirebaseClient.set(path, payments);
   });
 };
