@@ -3,24 +3,23 @@
 function RegistrationNotifier() {
   this.initialChildrenEnumeration = true;
 
-  listenToChildAddedOnFirebaseRef(this);
-  skipInitialChildrenEnumeration(this);
+  listenToChildAddedOnFirebaseRef();
 }
 
-function listenToChildAddedOnFirebaseRef(self) {
+function listenToChildAddedOnFirebaseRef() {
   FirebaseClient.getRef()
   .then(function(ref) {
     ref.child('/data').on('child_added', function(childSnapshot) {
-      if (self.initialChildrenEnumeration) return;
-      notifyAbout(childSnapshot.key(), childSnapshot.val());
+      var data = childSnapshot.val();
+
+      if (isOldAccount(data)) return;
+      notifyAbout(childSnapshot.key(), data);
     });
   });
 }
 
-function skipInitialChildrenEnumeration(self) {
-  setTimeout(function() {
-    self.initialChildrenEnumeration = false;
-  }, 5000);
+function isOldAccount(data) {
+  return 'timestamps' in data;
 }
 
 function notifyAbout(aid, data) {
